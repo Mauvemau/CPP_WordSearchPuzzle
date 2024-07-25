@@ -1,25 +1,13 @@
 #include "AwesomeLibrary.h"
-
-#include <iostream>
+#include "board.h"
 
 using namespace std;
 
 int main() {
-	int keyPress = 0;
+	Board* board = new Board("soup.txt");
+	board->print();
 
-	cout << "Press a key to display the key pressed!\nPress ESC to exit\n";
-
-	do {
-		if (keyPress > 0) {
-			cout << "Key pressed: " << static_cast<char>(keyPress) << "\n";
-		}
-		keyPress = getKey();
-
-		clearScreen();
-	} while (keyPress != KEY_ESC);
-	clearScreen();
-
-	cout << "Press any key to exit the software.\n";
-	getKey(true);
+	delete board;
+	getKey();
 	return 0;
 }
