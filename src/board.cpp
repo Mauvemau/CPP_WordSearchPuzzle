@@ -1,10 +1,27 @@
 #include "board.h"
 #include <fstream>
 
+#include "utils.h"
+
 using namespace std;
 
+void Board::pushLine(std::string line){
+
+	char** aux = grid;
+	for(int i = 0; i < height; i++){
+		aux++;
+	}
+	const char *strPtr = line.c_str();
+	char* auxX = *aux;
+	for (int i = 0; i < line.size(); i++) {
+		*auxX = *strPtr;
+		strPtr++;
+		auxX++;
+	}
+	height++;
+}
+
 void Board::loadBoard(string path) {
-	static const int bufferSize = 50;
 	ifstream inputStream;
 
 	try {
@@ -13,16 +30,17 @@ void Board::loadBoard(string path) {
 			throw ifstream::failure("File \"" + path + "\" not found ");
 		}
 
-		char line[bufferSize];
+		string line;
 
-		while (inputStream) {
+		while (getline(inputStream, line)) {
 			if (inputStream.fail()) {
-				throw ifstream::failure("An error ocurred while reading the file! ");
+				throw ifstream::failure("An error occurred while reading the file! ");
 			}
-			inputStream.getline(line, bufferSize);
+			if (width < line.size()) {
+				width = line.size();
+			}
 
-			cout << line << "\n";
-
+			pushLine(line);
 		}
 		cout << "File loaded successfully!\n";
 		inputStream.close();
@@ -33,21 +51,25 @@ void Board::loadBoard(string path) {
 		if (inputStream.is_open())
 			inputStream.close();
 	}
+
+	cout << "Width: " << width << "\n";
+	cout << "Height: " << height << "\n";
 }
 
 Board::Board(string path) {
-	//loadBoard(path);
-	width = 10;
-	height = 10;
+	width = 0;
+	height = 0;
 
-	grid = new char* [height];
-
+	grid = new char* [maxBoardHeight];
 	char** aux = grid;
-	for (int i = 0; i < height; i++) {
-		*aux = new char[width];
+	for (int i = 0; i < maxBoardHeight; i++) {
+		*aux = new char[maxBoardWidth];
 		aux++;
 	}
 	aux = grid;
+
+	loadBoard(path);
+	/*
 	for (int i = 0; i < height; i++) {
 		char* auxX = *aux;
 		for (int j = 0; j < width; j++) {
@@ -57,6 +79,7 @@ Board::Board(string path) {
 		aux++;
 	}
 	aux = grid;
+	*/
 	cout << "Board created!\n";
 }
 
