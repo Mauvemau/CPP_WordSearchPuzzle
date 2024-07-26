@@ -5,10 +5,37 @@
 
 using namespace std;
 
-void Board::pushLine(std::string line){
+Board::Board(string path) {
+	width = 0;
+	height = 0;
 
+	grid = new char* [maxBoardHeight];
 	char** aux = grid;
-	for(int i = 0; i < height; i++){
+	for (int i = 0; i < maxBoardHeight; i++) {
+		*aux = new char[maxBoardWidth];
+		aux++;
+	}
+	aux = grid;
+
+	loadBoard(path);
+	cout << "Board created!\n";
+}
+
+Board::~Board() {
+	char** aux = grid;
+	for (int i = 0; i < height; i++) {
+		delete[] * aux;
+		aux++;
+	}
+	delete[] grid;
+	cout << "Board deleted.\n";
+}
+
+// Private
+
+void Board::pushLine(std::string line) {
+	char** aux = grid;
+	for(int i = 0; i < height; i++) {
 		aux++;
 	}
 	const char *strPtr = line.c_str();
@@ -16,7 +43,7 @@ void Board::pushLine(std::string line){
 	for (int i = 0; i < line.size(); i++) {
 		if(*strPtr == '*'){
 			*auxX = Utils::getRandomLetter(true);
-		}else{
+		}else {
 			*auxX = *strPtr;
 		}
 		strPtr++;
@@ -60,31 +87,7 @@ void Board::loadBoard(string path) {
 	cout << "Height: " << height << "\n";
 }
 
-Board::Board(string path) {
-	width = 0;
-	height = 0;
-
-	grid = new char* [maxBoardHeight];
-	char** aux = grid;
-	for (int i = 0; i < maxBoardHeight; i++) {
-		*aux = new char[maxBoardWidth];
-		aux++;
-	}
-	aux = grid;
-
-	loadBoard(path);
-	cout << "Board created!\n";
-}
-
-Board::~Board() {
-	char** aux = grid;
-	for (int i = 0; i < height; i++) {
-		delete[] * aux;
-		aux++;
-	}
-	delete[] grid;
-	cout << "Board deleted.\n";
-}
+// Public
 
 void Board::print() {
 	char** aux = grid;
@@ -103,15 +106,3 @@ void Board::print() {
 	}
 	aux = grid;
 }
-
-/*
- f o*r (int i = 0; i < height; i++) {
- char* auxX = *aux;
- for (int j = 0; j < width; j++) {
-	 *auxX = 'N';
-	 auxX++;
-	 }
-	 aux++;
-	 }
-	 aux = grid;
-	 */
