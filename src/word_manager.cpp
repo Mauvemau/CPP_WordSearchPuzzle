@@ -1,5 +1,6 @@
 #include "word_manager.h"
 
+#include <string>
 #include <fstream>
 #include <cmath>
 

@@ -1,5 +1,7 @@
 #include "board.h"
+
 #include <fstream>
+#include <string>
 
 #include "utils.h"
 
@@ -40,7 +42,7 @@ void Board::pushLine(std::string line) {
 	}
 	const char *strPtr = line.c_str();
 	char* auxX = *aux;
-	for (int i = 0; i < line.size(); i++) {
+	for (int i = 0; static_cast<size_t>(i) < line.size(); i++) {
 		if(*strPtr == '*'){
 			*auxX = Utils::getRandomLetter(true);
 		}else {
@@ -67,7 +69,7 @@ void Board::loadBoard(string path) {
 			if (inputStream.fail()) {
 				throw ifstream::failure("An error occurred while reading the file! ");
 			}
-			if (width < line.size()) {
+			if (static_cast<size_t>(width) < line.size()) {
 				width = line.size();
 			}
 
