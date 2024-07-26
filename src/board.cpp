@@ -40,7 +40,7 @@ void Board::pushLine(std::string line) {
 	for(int i = 0; i < height; i++) {
 		aux++;
 	}
-	const char *strPtr = line.c_str();
+	const char* strPtr = line.c_str();
 	char* auxX = *aux;
 	for (int i = 0; static_cast<size_t>(i) < line.size(); i++) {
 		if(*strPtr == '*'){
