@@ -8,6 +8,9 @@ int main() {
 	board->print();
 
 	delete board;
+
+#ifdef _WIN32
 	getKey();
+#endif
 	return 0;
 }

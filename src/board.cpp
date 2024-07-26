@@ -14,7 +14,11 @@ void Board::pushLine(std::string line){
 	const char *strPtr = line.c_str();
 	char* auxX = *aux;
 	for (int i = 0; i < line.size(); i++) {
-		*auxX = *strPtr;
+		if(*strPtr == '*'){
+			*auxX = Utils::getRandomLetter(true);
+		}else{
+			*auxX = *strPtr;
+		}
 		strPtr++;
 		auxX++;
 	}
@@ -69,17 +73,6 @@ Board::Board(string path) {
 	aux = grid;
 
 	loadBoard(path);
-	/*
-	for (int i = 0; i < height; i++) {
-		char* auxX = *aux;
-		for (int j = 0; j < width; j++) {
-			*auxX = 'N';
-			auxX++;
-		}
-		aux++;
-	}
-	aux = grid;
-	*/
 	cout << "Board created!\n";
 }
 
@@ -98,7 +91,11 @@ void Board::print() {
 	for (int i = 0; i < height; i++) {
 		char* auxX = *aux;
 		for (int j = 0; j < width; j++) {
-			cout << *auxX;
+			if(*auxX){
+				cout << *auxX << " ";
+			}else {
+				cout << "  "; // If the puzzle is asymmetrical we just draw an empty space
+			}
 			auxX++;
 		}
 		cout << "\n";
@@ -106,3 +103,15 @@ void Board::print() {
 	}
 	aux = grid;
 }
+
+/*
+ f o*r (int i = 0; i < height; i++) {
+ char* auxX = *aux;
+ for (int j = 0; j < width; j++) {
+	 *auxX = 'N';
+	 auxX++;
+	 }
+	 aux++;
+	 }
+	 aux = grid;
+	 */
