@@ -1,23 +1,16 @@
 #include "AwesomeLibrary.h"
+
+#include "game.h"
 #include "board.h"
 #include "word_manager.h"
 
 using namespace std;
 
 int main() {
-	Board* board = new Board("vehicles.txt");
-	WordManager* wm = new WordManager("vehicles_words.txt");
+	Game* game = new Game();
+	game->load("vehicles");
 
-	cout << "\n";
-
-	board->print();
-	cout << "\n";
-	wm->print();
-
-	cout << "\n";
-
-	delete board;
-	delete wm;
+	delete game;
 
 #ifdef _WIN32
 	getKey();
