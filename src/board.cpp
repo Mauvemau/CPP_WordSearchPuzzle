@@ -25,8 +25,8 @@ Board::Board(string path) {
 
 Board::~Board() {
 	Slot** aux = grid;
-	for (int i = 0; i < height; i++) {
-		delete[] * aux;
+	for (int i = 0; i < maxBoardHeight; i++) {
+		delete[] *aux;
 		aux++;
 	}
 	delete[] grid;
