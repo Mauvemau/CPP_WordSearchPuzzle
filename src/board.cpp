@@ -11,10 +11,10 @@ Board::Board(string path) {
 	width = 0;
 	height = 0;
 
-	grid = new char* [maxBoardHeight];
-	char** aux = grid;
+	grid = new Slot* [maxBoardHeight];
+	Slot** aux = grid;
 	for (int i = 0; i < maxBoardHeight; i++) {
-		*aux = new char[maxBoardWidth];
+		*aux = new Slot[maxBoardWidth];
 		aux++;
 	}
 	aux = grid;
@@ -24,7 +24,7 @@ Board::Board(string path) {
 }
 
 Board::~Board() {
-	char** aux = grid;
+	Slot** aux = grid;
 	for (int i = 0; i < height; i++) {
 		delete[] * aux;
 		aux++;
@@ -36,18 +36,19 @@ Board::~Board() {
 // Private
 
 void Board::pushLine(std::string line) {
-	char** aux = grid;
+	Slot** aux = grid;
 	for(int i = 0; i < height; i++) {
 		aux++;
 	}
 	const char* strPtr = line.c_str();
-	char* auxX = *aux;
+	Slot* auxX = *aux;
 	for (int i = 0; static_cast<size_t>(i) < line.size(); i++) {
 		if(*strPtr == '*'){
-			*auxX = Utils::getRandomLetter(true);
+			auxX->ch = Utils::getRandomLetter(true);
 		}else {
-			*auxX = *strPtr;
+			auxX->ch = *strPtr;
 		}
+		auxX->col = Color::BWHITE;
 		strPtr++;
 		auxX++;
 	}
@@ -92,12 +93,13 @@ void Board::loadBoard(string path) {
 // Public
 
 void Board::print() {
-	char** aux = grid;
+	Slot** aux = grid;
 	for (int i = 0; i < height; i++) {
-		char* auxX = *aux;
+		Slot* auxX = *aux;
 		for (int j = 0; j < width; j++) {
-			if(*auxX){
-				cout << *auxX << " ";
+			setForegroundColor(auxX->col);
+			if(auxX->ch){
+				cout << auxX->ch << " ";
 			}else {
 				cout << "  "; // If the puzzle is asymmetrical we just draw an empty space
 			}
@@ -106,5 +108,6 @@ void Board::print() {
 		cout << "\n";
 		aux++;
 	}
+	setForegroundColor(Color::WHITE);
 	aux = grid;
 }

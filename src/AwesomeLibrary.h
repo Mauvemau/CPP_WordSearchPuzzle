@@ -17,6 +17,7 @@
 
 using namespace std;
 
+#ifdef _WIN32
 enum class Color
 {
 	BLACK,
@@ -36,6 +37,27 @@ enum class Color
 	YELLOW,
 	BWHITE
 };
+#else
+enum class Color
+{
+	BLACK,
+	RED,
+	GREEN,
+	BROWN,
+	BLUE,
+	MAGENTA,
+	CYAN,
+	WHITE,
+	GRAY,
+	LRED,
+	LGREEN,
+	YELLOW,
+	LBLUE,
+	LMAGENTA,
+	LCYAN,
+	BWHITE
+};
+#endif
 
 const int KEY_ESC = 27;
 #ifdef _WIN32

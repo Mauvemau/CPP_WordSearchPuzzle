@@ -16,7 +16,7 @@ WordManager::~WordManager() {
         words[i].coords.clear();
     }
     words.clear();
-    cout << "Board manager deleted.\n";
+    cout << "Word manager deleted.\n";
 }
 
 // Private

@@ -150,13 +150,27 @@ void setForegroundColor(Color color)
 void setColor(Color color, bool isBackground)
 {
 	int ansiColor = static_cast<int>(color);
-	if (isBackground)
+	if (ansiColor >= 8) // Bright colors start from index 8 in the enum
 	{
-		ansiColor += 40; // Background color
+		if (isBackground)
+		{
+			ansiColor += 92; // Bright background colors start from 100
+		}
+		else
+		{
+			ansiColor += 82; // Bright foreground colors start from 90
+		}
 	}
 	else
 	{
-		ansiColor += 30; // Foreground color
+		if (isBackground)
+		{
+			ansiColor += 40; // Standard background colors start from 40
+		}
+		else
+		{
+			ansiColor += 30; // Standard foreground colors start from 30
+		}
 	}
 	std::cout << "\033[" << ansiColor << "m";
 }
