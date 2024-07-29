@@ -9,7 +9,10 @@ class Game{
 private:
     Board* board;
     WordManager* wm;
+    bool finished;
 
+    // i didn't know how to call it, but it's sort of a bridge between word manager and board that i'm using for colors
+    void colorFoundWordsOnBoard(std::vector<Word> wordsToColor, Color color);
     void update();
 public:
     Game();

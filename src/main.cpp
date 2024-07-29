@@ -11,9 +11,5 @@ int main() {
 	game->load("vehicles");
 
 	delete game;
-
-#ifdef _WIN32
-	getKey();
-#endif
 	return 0;
 }

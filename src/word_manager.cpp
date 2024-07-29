@@ -4,31 +4,89 @@
 #include <fstream>
 #include <cmath>
 
+#include "AwesomeLibrary.h"
+
 using namespace std;
 
-WordManager::WordManager(std::string path) {
+WordManager::WordManager() {
+    cout << "Word manager created!\n";
+}
+
+WordManager::WordManager(string path) {
     loadWords(path);
     cout << "Word manager created!\n";
 }
 
 WordManager::~WordManager() {
-    for (int i = 0; i < static_cast<int>(words.size()); i++) {
-        words[i].coords.clear();
+    for (vector<Word>::iterator it = wordsToFind.begin(); it != wordsToFind.end(); ++it) {
+        it->coords.clear();
     }
-    words.clear();
-    cout << "Word manager deleted.\n";
+    wordsToFind.clear();
+    for (vector<Word>::iterator it = wordsFound.begin(); it != wordsFound.end(); ++it) {
+        it->coords.clear();
+    }
+    wordsFound.clear();
+    cout << "Word manager destroyed.\n";
 }
 
 // Private
 
-void WordManager::pushWord(std::string word, Vector2 startCoord, Vector2 endCoord){
+void WordManager::pushWord(string word, Vector2 startCoord, Vector2 endCoord){
     Word wordToPush;
     wordToPush.word = word;
     wordToPush.coords = getPositionsBetween(startCoord, endCoord);
-    words.push_back(wordToPush);
+    wordsToFind.push_back(wordToPush);
 }
 
-void WordManager::loadWords(std::string path) {
+vector<Vector2> WordManager::getPositionsBetween(Vector2 start, Vector2 end) {
+    vector<Vector2> positions;
+
+    int dx = end.x - start.x;
+    int dy = end.y - start.y;
+
+    int stepX = (dx != 0) ? (dx / abs(dx)) : 0;
+    int stepY = (dy != 0) ? (dy / abs(dy)) : 0;
+
+    int steps = max(abs(dx), abs(dy));
+
+    for (int i = 0; i <= steps; ++i) {
+        Vector2 currentPosition = { start.x + i * stepX, start.y + i * stepY };
+        positions.push_back(currentPosition);
+    }
+
+    return positions;
+}
+
+WordStatus WordManager::validateWord(string word) {
+    for (vector<Word>::iterator it = wordsToFind.begin(); it != wordsToFind.end(); ++it) {
+        if (Utils::upCase(it->word) == Utils::upCase(word)) {
+            return WordStatus::CORRECT;
+        }
+    }
+    for (vector<Word>::iterator it = wordsFound.begin(); it != wordsFound.end(); ++it) {
+        if (Utils::upCase(it->word) == Utils::upCase(word)) {
+            return WordStatus::ALREADY_FOUND;
+        }
+    }
+
+    return WordStatus::INCORRECT;
+}
+
+void WordManager::setToFound(string word) {
+    for (vector<Word>::iterator it = wordsToFind.begin(); it != wordsToFind.end();) {
+        if (Utils::upCase(it->word) == Utils::upCase(word)) {
+            wordsFound.push_back(*it);
+            it = wordsToFind.erase(it); // I just learned erase actually returns the next iterator!!! :)
+        }
+        else { // Since we're modifying the container it's safer to increment inside the for's scope
+            ++it;
+        }
+    }
+}
+
+// Public
+
+void WordManager::loadWords(string path) {
     ifstream inputStream;
 
     try {
@@ -70,7 +128,7 @@ void WordManager::loadWords(std::string path) {
             //
             pushWord(word, startCoord, endCoord);
         }
-        cout << "File loaded successfully!\n";
+        cout << wordsToFind.size() << " words were loaded successfully!";
         inputStream.close();
     }
     catch (ifstream::failure& exception) {
@@ -81,33 +139,52 @@ void WordManager::loadWords(std::string path) {
     }
 }
 
-vector<Vector2> WordManager::getPositionsBetween(Vector2 start, Vector2 end) {
-    vector<Vector2> positions;
-
-    int dx = end.x - start.x;
-    int dy = end.y - start.y;
-
-    int stepX = (dx != 0) ? (dx / std::abs(dx)) : 0;
-    int stepY = (dy != 0) ? (dy / std::abs(dy)) : 0;
-
-    int steps = std::max(std::abs(dx), std::abs(dy));
-
-    for (int i = 0; i <= steps; ++i) {
-        Vector2 currentPosition = { start.x + i * stepX, start.y + i * stepY };
-        positions.push_back(currentPosition);
-    }
-
-    return positions;
+int WordManager::getWordsToFindCount() {
+    return wordsToFind.size();
 }
 
-// Public
+int WordManager::getWordsFoundCount() {
+    return wordsFound.size();
+}
 
-void WordManager::print() {
-    for (int i = 0; i < static_cast<int>(words.size()); i++) {
-        cout << words[i].word << "\n";
-        for (int j = 0; j < static_cast<int>(words[i].coords.size()); j++) {
-            cout << words[i].coords[j].x << ";" << words[i].coords[j].y << " ";
-        }
-        cout << "\n";
+vector<Word> WordManager::getWordsFound() {
+    return wordsFound;
+}
+
+bool WordManager::handleWord(string word) {
+    if (word == "") return false; // We just ignore it if the string is empty
+
+    switch (validateWord(word))
+    {
+    case WordStatus::INCORRECT:
+        setForegroundColor(Color::LRED);
+        cout << "I'm sorry but the word \"" << word << "\" is NOT part of this puzzle.\n";
+        setForegroundColor(Color::WHITE);
+        return false;
+        break;
+    case WordStatus::CORRECT:
+        setToFound(word); // We add it to the found vector if it's valid
+        setForegroundColor(Color::LGREEN);
+        cout << "Congratulations, you found the word \"" << Utils::upCase(word) << "\"!!!\n";
+        setForegroundColor(Color::WHITE);
+        return true; // We want to return true only if the word is correct, the enum is mainly for accurate feedback
+        break;
+    case WordStatus::ALREADY_FOUND:
+        setForegroundColor(Color::YELLOW);
+        cout << "You already found this word bud. :)\n";
+        setForegroundColor(Color::WHITE);
+        return false;
+        break;
+    default:
+        return false;
+        break;
+    }
+}
+
+void WordManager::printFoundWords() {
+    for (vector<Word>::iterator it = wordsFound.begin(); it != wordsFound.end(); ++it) {
+        setForegroundColor(Color::YELLOW);
+        cout << it->word << "\n";
+        setForegroundColor(Color::WHITE);
     }
 }

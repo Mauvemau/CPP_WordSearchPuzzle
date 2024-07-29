@@ -28,6 +28,9 @@
     <ClCompile Include="src\AwesomeLibrary.cpp">
       <Filter>Source Files\dep</Filter>
     </ClCompile>
+    <ClCompile Include="src\game.cpp">
+      <Filter>Source Files\Game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\board.h">
@@ -41,6 +44,9 @@
     </ClInclude>
     <ClInclude Include="src\AwesomeLibrary.h">
       <Filter>Source Files\dep</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game.h">
+      <Filter>Source Files\Game</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

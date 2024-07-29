@@ -2,6 +2,9 @@
 #include "AwesomeLibrary.h"
 
 #include <iostream>
+#include <vector>
+
+#include "utils.h"
 
 struct Slot{
 	char ch;
@@ -17,10 +20,15 @@ private:
 	int height;
 
 	void pushLine(std::string line);
-	void loadBoard(std::string path);
 public:
+	Board();
 	Board(std::string path);
 	~Board();
+
+	void colorSlot(Vector2 coord, Color color);
+	void colorSlots(std::vector<Vector2> coordsToColor, Color color);
+
+	void load(std::string path);
 
 	void print();
 };

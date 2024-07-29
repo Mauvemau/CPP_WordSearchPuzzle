@@ -3,9 +3,22 @@
 #include <fstream>
 #include <string>
 
-#include "utils.h"
-
 using namespace std;
+
+Board::Board() {
+	width = 0;
+	height = 0;
+
+	grid = new Slot * [maxBoardHeight];
+	Slot** aux = grid;
+	for (int i = 0; i < maxBoardHeight; i++) {
+		*aux = new Slot[maxBoardWidth];
+		aux++;
+	}
+	aux = grid;
+
+	cout << "Board created!\n";
+}
 
 Board::Board(string path) {
 	width = 0;
@@ -19,7 +32,7 @@ Board::Board(string path) {
 	}
 	aux = grid;
 
-	loadBoard(path);
+	load(path);
 	cout << "Board created!\n";
 }
 
@@ -30,16 +43,15 @@ Board::~Board() {
 		aux++;
 	}
 	delete[] grid;
-	cout << "Board deleted.\n";
+	cout << "Board destroyed.\n";
 }
 
 // Private
 
 void Board::pushLine(std::string line) {
 	Slot** aux = grid;
-	for(int i = 0; i < height; i++) {
-		aux++;
-	}
+	aux += height;
+
 	const char* strPtr = line.c_str();
 	Slot* auxX = *aux;
 	for (int i = 0; static_cast<size_t>(i) < line.size(); i++) {
@@ -55,7 +67,29 @@ void Board::pushLine(std::string line) {
 	height++;
 }
 
-void Board::loadBoard(string path) {
+// Public
+
+void Board::colorSlot(Vector2 coord, Color color) {
+	if (coord.y < height && coord.y > -1 && coord.x < width && coord.y > -1) {
+		Slot** aux = grid;
+		aux += coord.y;
+		Slot* auxX = *aux;
+		auxX += coord.x;
+
+		auxX->col = color;
+	}
+	else {
+		cout << "ERROR: color cursor out of bouds!!\n";
+	}
+}
+
+void Board::colorSlots(vector<Vector2> coordsToColor, Color color) {
+	for (vector<Vector2>::iterator it = coordsToColor.begin(); it != coordsToColor.end(); ++it) {
+		colorSlot(*it, color);
+	}
+}
+
+void Board::load(string path) {
 	ifstream inputStream;
 
 	try {
@@ -76,7 +110,7 @@ void Board::loadBoard(string path) {
 
 			pushLine(line);
 		}
-		cout << "File loaded successfully!\n";
+		cout << "Board loaded successfully with " << width << "x" << height << " lines!!\n";
 		inputStream.close();
 	}
 	catch (ifstream::failure& exception) {
@@ -85,12 +119,7 @@ void Board::loadBoard(string path) {
 		if (inputStream.is_open())
 			inputStream.close();
 	}
-
-	cout << "Width: " << width << "\n";
-	cout << "Height: " << height << "\n";
 }
-
-// Public
 
 void Board::print() {
 	Slot** aux = grid;

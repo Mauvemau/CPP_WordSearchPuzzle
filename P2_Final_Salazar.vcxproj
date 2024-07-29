@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClCompile Include="src\AwesomeLibrary.cpp" />
     <ClCompile Include="src\board.cpp" />
+    <ClCompile Include="src\game.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\utils.cpp" />
     <ClCompile Include="src\word_manager.cpp" />
@@ -28,6 +29,7 @@
   <ItemGroup>
     <ClInclude Include="src\AwesomeLibrary.h" />
     <ClInclude Include="src\board.h" />
+    <ClInclude Include="src\game.h" />
     <ClInclude Include="src\utils.h" />
     <ClInclude Include="src\word_manager.h" />
   </ItemGroup>
