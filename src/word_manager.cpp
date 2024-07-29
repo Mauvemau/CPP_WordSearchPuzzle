@@ -167,7 +167,7 @@ bool WordManager::handleWord(string word) {
         setForegroundColor(Color::LGREEN);
         cout << "Congratulations, you found the word \"" << Utils::upCase(word) << "\"!!!\n";
         setForegroundColor(Color::WHITE);
-        return true; // We want to return true only if the word is correct, the enum is mainly for accurate feedback
+        return true; // We want to return TRUE only if the word is correct, the enum is mainly for accurate feedback
         break;
     case WordStatus::ALREADY_FOUND:
         setForegroundColor(Color::YELLOW);

@@ -8,7 +8,9 @@ using namespace std;
 
 int main() {
 	Game* game = new Game();
-	game->load("vehicles");
+	//game->load("computers");
+	game->load("cars");
+	//game->load("animals");
 
 	delete game;
 	return 0;

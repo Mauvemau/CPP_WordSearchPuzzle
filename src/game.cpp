@@ -11,10 +11,7 @@ Game::Game(){
 }
 
 Game::~Game(){
-    if(board)
-        delete board;
-    if(wm)
-        delete wm;
+    unload();
     cout << "Game destroyed.\n";
 }
 
@@ -60,9 +57,23 @@ void Game::update(){
 // Public
 
 void Game::load(string name){
-    board->load(name + ".txt");
-    wm->loadWords(name + "_words.txt");
+    if (board || wm) {
+        unload();
+        board = new Board();
+        wm = new WordManager();
+    }
+    finished = false;
+
+    board->load("puzzles/" + name + ".txt");
+    wm->loadWords("puzzles/" + name + "_words.txt");
     cout << "\n";
 
     update();
+}
+
+void Game::unload() {
+    if (board)
+        delete board;
+    if (wm)
+        delete wm;
 }

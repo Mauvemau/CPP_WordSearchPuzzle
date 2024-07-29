@@ -19,4 +19,5 @@ public:
     ~Game();
 
     void load(std::string name);
+    void unload();
 };
