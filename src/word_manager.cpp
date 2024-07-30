@@ -18,14 +18,7 @@ WordManager::WordManager(string path) {
 }
 
 WordManager::~WordManager() {
-    for (vector<Word>::iterator it = wordsToFind.begin(); it != wordsToFind.end(); ++it) {
-        it->coords.clear();
-    }
-    wordsToFind.clear();
-    for (vector<Word>::iterator it = wordsFound.begin(); it != wordsFound.end(); ++it) {
-        it->coords.clear();
-    }
-    wordsFound.clear();
+    clear();
     cout << "Word manager destroyed.\n";
 }
 
@@ -88,6 +81,7 @@ void WordManager::setToFound(string word) {
 
 void WordManager::loadWords(string path) {
     ifstream inputStream;
+    clear();
 
     try {
         inputStream.open(path);
@@ -187,4 +181,15 @@ void WordManager::printFoundWords() {
         cout << it->word << "\n";
         setForegroundColor(Color::WHITE);
     }
+}
+
+void WordManager::clear() {
+    for (vector<Word>::iterator it = wordsToFind.begin(); it != wordsToFind.end(); ++it) {
+        it->coords.clear();
+    }
+    wordsToFind.clear();
+    for (vector<Word>::iterator it = wordsFound.begin(); it != wordsFound.end(); ++it) {
+        it->coords.clear();
+    }
+    wordsFound.clear();
 }

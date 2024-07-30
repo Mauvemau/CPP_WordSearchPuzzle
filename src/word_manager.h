@@ -39,4 +39,6 @@ public:
     bool handleWord(std::string word);
 
     void printFoundWords();
+
+    void clear();
 };

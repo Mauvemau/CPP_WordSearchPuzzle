@@ -1,5 +1,7 @@
 #include "game.h"
 
+#include "user_data_manager.h"
+
 using namespace std;
 
 Game::Game(){
@@ -11,7 +13,8 @@ Game::Game(){
 }
 
 Game::~Game(){
-    unload();
+    delete board;
+    delete wm;
     cout << "Game destroyed.\n";
 }
 
@@ -29,6 +32,7 @@ void Game::update(){
         clearScreen();
         string input;
 
+        cout << themeName << "\n";
         board->print();
         cout << "\n";
         cout << "Words left to find: " << wm->getWordsToFindCount() << "\n";
@@ -56,12 +60,8 @@ void Game::update(){
 
 // Public
 
-void Game::load(string name){
-    if (board || wm) {
-        unload();
-        board = new Board();
-        wm = new WordManager();
-    }
+void Game::load(string name, string themeName){
+    this->themeName = themeName;
     finished = false;
 
     board->load("puzzles/" + name + ".txt");
@@ -71,9 +71,22 @@ void Game::load(string name){
     update();
 }
 
-void Game::unload() {
-    if (board)
-        delete board;
-    if (wm)
-        delete wm;
+void Game::save() {
+    MatchData md = UserDataManager::fetchMatchData(themeName);
+    int playCount = md.amountTimesPlayed + 1;
+    int wordsFound = wm->getWordsFoundCount();
+    int wordsLeft = wm->getWordsToFindCount();
+    float completion;
+    if (wordsFound + wordsLeft == 0) {
+        completion = 0.0f;
+    }else {
+        completion = (static_cast<float>(wordsFound) / (wordsFound + wordsLeft)) * 100.0f;
+    }
+    md.themeName = themeName;
+    md.amountTimesPlayed = playCount;
+    if (md.completion < completion) {
+        md.completion = completion;
+    }
+
+    UserDataManager::pushMatchData(md);
 }

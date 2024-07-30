@@ -9,6 +9,7 @@ class Game{
 private:
     Board* board;
     WordManager* wm;
+    std::string themeName;
     bool finished;
 
     // i didn't know how to call it, but it's sort of a bridge between word manager and board that i'm using for colors
@@ -18,6 +19,6 @@ public:
     Game();
     ~Game();
 
-    void load(std::string name);
-    void unload();
+    void load(std::string name, std::string themeName);
+    void save();
 };

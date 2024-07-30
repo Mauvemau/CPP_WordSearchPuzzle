@@ -91,6 +91,8 @@ void Board::colorSlots(vector<Vector2> coordsToColor, Color color) {
 
 void Board::load(string path) {
 	ifstream inputStream;
+	width = 0;
+	height = 0;
 
 	try {
 		inputStream.open(path);
