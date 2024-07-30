@@ -125,7 +125,14 @@ void Board::load(string path) {
 
 void Board::print() {
 	Slot** aux = grid;
+	int consoleWidth = getScreenWidth();
+	int consoleHeight = getScreenHeight();
+	int boardWidth = width * 4 + 1; // Each slot is 3 characters wide (+---) plus one border at the end
+	int boardHeight = height * 2 + 1; // Each row is 2 characters high (content + border) plus one top border
+	int startX = (consoleWidth - boardWidth) / 2;
+	int startY = (consoleHeight - boardHeight) / 2;
 
+	goToCoordinates(startX, startY);
 	for (int i = 0; i < width; i++) {
 		cout << "+---";
 	}
@@ -134,6 +141,7 @@ void Board::print() {
 	for (int i = 0; i < height; i++) {
 		Slot* auxX = *aux;
 
+		goToCoordinates(startX, startY + i * 2 + 1);
 		for (int j = 0; j < width; j++) {
 			cout << "| ";
 			setForegroundColor(auxX->col);
@@ -143,12 +151,13 @@ void Board::print() {
 			else {
 				cout << " "; // If the puzzle is asymmetrical we just draw an empty space
 			}
-			setForegroundColor(Color::BWHITE);
+			setForegroundColor(Color::WHITE);
 			cout << " ";
 			auxX++;
 		}
 		cout << "|\n";
 
+		goToCoordinates(startX, startY + i * 2 + 2);
 		for (int j = 0; j < width; j++) {
 			cout << "+---";
 		}
@@ -157,5 +166,6 @@ void Board::print() {
 		aux++;
 	}
 	setForegroundColor(Color::WHITE);
+	goToCoordinates(1, 1);
 	aux = grid;
 }

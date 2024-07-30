@@ -32,14 +32,21 @@ void Game::update(){
         clearScreen();
         string input;
 
-        cout << themeName << "\n";
         board->print();
+        cout << "Theme: " << themeName << "\n\n";
         if (wm->getWordsFoundCount() > 0) {
             cout << "Words Found:\n";
             wm->printFoundWords();
         }
+        else {
+            setForegroundColor(Color::LCYAN);
+            cout << "[ENTER] to submit answer\n";
+            cout << "[ESC] key to return\n\n";
+            setForegroundColor(Color::WHITE);
+        }
         if (wm->getWordsToFindCount() > 0) { // If user has not won yet
             cout << "Words left to find: " << wm->getWordsToFindCount() << "\n";
+            cout << "\n";
             cout << "Input > ";
             input = Utils::customCharacterInput();
             if (MAGIC_STRING == input) { // Manual exit condition
