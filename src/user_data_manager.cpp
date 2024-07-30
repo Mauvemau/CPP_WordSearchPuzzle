@@ -76,7 +76,7 @@ UserData UserDataManager::fetchData(string userName) {
 	return data;
 }
 
-bool UserDataManager::userExists(std::string userName) {
+bool UserDataManager::userExists(string userName) {
 	for (list<UserData>::iterator it = users.begin(); it != users.end(); ++it) {
 		if (it->userName == userName) {
 			return true;
@@ -87,7 +87,7 @@ bool UserDataManager::userExists(std::string userName) {
 
 // Public
 
-MatchData UserDataManager::fetchMatchData(std::string themeName) {
+MatchData UserDataManager::fetchMatchData(string themeName) {
 	for (vector<MatchData>::iterator it = loadedUser.gamesPlayed.begin(); it != loadedUser.gamesPlayed.end(); ++it) {
 		if (it->themeName == themeName) return *it;
 	}
@@ -186,7 +186,7 @@ void UserDataManager::printStatics() {
 	}
 	else {
 		cout << "Users recorded in this machine:\n";
-		for (std::list<UserData>::iterator it = users.begin(); it != users.end(); ++it) {
+		for (list<UserData>::iterator it = users.begin(); it != users.end(); ++it) {
 			cout << "\n";
 			cout << "UserName: " << it->userName << "\n";
 			cout << "Puzzles Played:\n";
@@ -196,8 +196,8 @@ void UserDataManager::printStatics() {
 				setForegroundColor(Color::WHITE);
 			}
 			else {
-				for (std::vector<MatchData>::iterator _it = it->gamesPlayed.begin(); _it != it->gamesPlayed.end(); ++_it) {
-					cout << "-\n";
+				for (vector<MatchData>::iterator _it = it->gamesPlayed.begin(); _it != it->gamesPlayed.end(); ++_it) {
+					cout << "\n";
 					if (_it->completion == 100.0f) {
 						setForegroundColor(Color::LGREEN);
 					}

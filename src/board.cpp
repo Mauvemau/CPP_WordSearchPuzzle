@@ -48,7 +48,7 @@ Board::~Board() {
 
 // Private
 
-void Board::pushLine(std::string line) {
+void Board::pushLine(string line) {
 	Slot** aux = grid;
 	aux += height;
 
@@ -125,18 +125,35 @@ void Board::load(string path) {
 
 void Board::print() {
 	Slot** aux = grid;
+
+	for (int i = 0; i < width; i++) {
+		cout << "+---";
+	}
+	cout << "+\n";
+
 	for (int i = 0; i < height; i++) {
 		Slot* auxX = *aux;
+
 		for (int j = 0; j < width; j++) {
+			cout << "| ";
 			setForegroundColor(auxX->col);
-			if(auxX->ch){
-				cout << auxX->ch << " ";
-			}else {
-				cout << "  "; // If the puzzle is asymmetrical we just draw an empty space
+			if (auxX->ch) {
+				cout << auxX->ch;
 			}
+			else {
+				cout << " "; // If the puzzle is asymmetrical we just draw an empty space
+			}
+			setForegroundColor(Color::BWHITE);
+			cout << " ";
 			auxX++;
 		}
-		cout << "\n";
+		cout << "|\n";
+
+		for (int j = 0; j < width; j++) {
+			cout << "+---";
+		}
+		cout << "+\n";
+
 		aux++;
 	}
 	setForegroundColor(Color::WHITE);

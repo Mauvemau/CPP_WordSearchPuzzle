@@ -42,7 +42,6 @@ void Menu::gameSelectMenu() {
 			index--;
 			if (index > -1 && index < static_cast<int>(loadableGames.size())) {
 				game->load(loadableGames[index].id, loadableGames[index].displayName);
-				goBack = true; // After leaving the game
 				game->save();
 			}
 		}
@@ -53,7 +52,9 @@ void Menu::userMenu() {
 	string userName;
 	cout << "Please input your name. (or press ESC to cancel)\n";
 	cout << "Input > ";
-	userName = Utils::customCharacterInput();
+	do {
+		userName = Utils::customCharacterInput();
+	} while (userName.size() < 1);
 	if (userName != MAGIC_STRING) {
 		clearScreen();
 		UserDataManager::login(userName);
