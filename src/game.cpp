@@ -53,13 +53,16 @@ void Game::update(){
                 finished = true;
             }
             else if (input != "") { // If the user doesn't input anything just ignore
+                cout << "\n";
                 if (wm->handleWord(input)) {
                     colorFoundWordsOnBoard(wm->getWordsFound(), Color::LGREEN);
                 }
+                cout << "Press any key to continue...\n";
                 getKey(true);
             }
         }
         else { // If user won
+            cout << "\n";
             setForegroundColor(Color::LGREEN);
             cout << "Congratulations! you found all the words for this puzzle!\n";
             setForegroundColor(Color::WHITE);

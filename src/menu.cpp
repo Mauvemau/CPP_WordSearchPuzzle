@@ -26,13 +26,14 @@ void Menu::gameSelectMenu() {
 		cout << "Please use the numbers on your keyboard to select one of the following available puzzles:\n";
 		int i = 1;
 		for (vector<GameData>::iterator it = loadableGames.begin(); it != loadableGames.end(); ++it) {
+			cout << "\n";
 			cout << i << ". " << it->displayName << "\n";
 			cout << "Size: " << it->size.x << "x" << it->size.y << "\n";
 			cout << "Amount of words: " << it->amountWords << "\n";
-			cout << "-\n";
 			i++;
 		}
 
+		cout << "\n";
 		cout << "Input > ";
 		input = getKey(true);
 		if (KEY_ESC == input) {
@@ -50,7 +51,7 @@ void Menu::gameSelectMenu() {
 
 void Menu::userMenu() {
 	string userName;
-	cout << "Please input your name. (or press ESC to cancel)\n";
+	cout << "Please input your name. (or press ESC to cancel)\n\n";
 	cout << "Input > ";
 	do {
 		userName = Utils::customCharacterInput();
@@ -66,10 +67,10 @@ void Menu::update() {
 	int input;
 	do {
 		clearScreen();
-		cout << "Use the numbers on your keyboard to select one of the following options:\n";
+		cout << "Use the numbers on your keyboard to select one of the following options:\n\n";
 		cout << "1. Select Puzzle\n";
 		cout << "2. See User Statics\n";
-		cout << "3. Exit Program\n";
+		cout << "3. Exit Program\n\n";
 
 		cout << "Input > ";
 		input = getKey(true);

@@ -188,7 +188,7 @@ void UserDataManager::printStatics() {
 		cout << "Users recorded in this machine:\n";
 		for (list<UserData>::iterator it = users.begin(); it != users.end(); ++it) {
 			cout << "\n";
-			cout << "UserName: " << it->userName << "\n";
+			cout << "Name: " << it->userName << "\n";
 			cout << "Puzzles Played:\n";
 			if (it->gamesPlayed.empty()) {
 				setForegroundColor(Color::LRED);
