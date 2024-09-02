@@ -1,1 +1,1 @@
-A C++ search word puzzle game
+A customizable C++ search word puzzle game for the terminal
